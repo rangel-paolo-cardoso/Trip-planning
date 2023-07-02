@@ -1,5 +1,6 @@
 package com.rangel;
 
+import java.text.Normalizer;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
@@ -28,6 +29,17 @@ public class Time {
     }
 
     /**
+     * Converts the city name to a normalized form.
+     * @param city the name of the city, type String.
+     * @return a String that holds the normalized form of the city name.
+     */
+    private String treatCityName(String city) {
+        return Normalizer.normalize(city, Normalizer.Form.NFD)
+        .replaceAll("\\p{M}", "")
+        .replace(" ", "_");
+    }
+
+    /**
      * Returns the city name, given an array of type String containing the ZodeId.
      * @param splitZoneId array fo type String.
      * @return string representing the city name.
@@ -47,7 +59,8 @@ public class Time {
         int indexOriginTimeZone = 0;
 
         for (int i = 0; i < timeZones.length; i++) {
-            if (getCityName(timeZones[i].split("/")).equals(origin)) {
+            System.out.println("City name: " + treatCityName(origin));
+            if (getCityName(timeZones[i].split("/")).equals(treatCityName(origin))) {
                 indexOriginTimeZone = i;
                 break;
             }
@@ -61,7 +74,7 @@ public class Time {
         int indexDestinationTimeZone = 0;
 
         for (int i = 0; i < timeZones.length; i++) {
-            if (getCityName(timeZones[i].split("/")).equals(destination)) {
+            if (getCityName(timeZones[i].split("/")).equals(treatCityName(destination))) {
                 indexDestinationTimeZone = 1;
                 break;
             }
@@ -84,7 +97,7 @@ public class Time {
         int indexOriginTimeZone = 0;
 
         for (int i = 0; i < timeZones.length; i++) {
-            if (timeZones[i].contains(destination)) {
+            if (getCityName(timeZones[i].split("/")).equals(treatCityName(destination))) {
                 indexOriginTimeZone = i;
                 break;
             }
