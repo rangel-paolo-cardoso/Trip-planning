@@ -1,5 +1,6 @@
 package com.rangel;
 
+import java.text.Normalizer;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
@@ -28,6 +29,27 @@ public class Time {
     }
 
     /**
+     * Converts the city name to a normalized form, removing the accents.
+     * @param city the name of the city, type String.
+     * @return a String that holds the normalized form of the city name.
+     */
+    private String treatCityName(String city) {
+        return Normalizer.normalize(city, Normalizer.Form.NFD)
+        .replaceAll("\\p{M}", "")
+        .replace(" ", "_");
+    }
+
+    /**
+     * Returns the city name, given an array of type String containing the ZodeId.
+     * @param splitZoneId array fo type String.
+     * @return string representing the city name.
+     */
+    private String getCityName(String zoneId) {
+        String[] splitZoneId = zoneId.split("/");
+        return splitZoneId[splitZoneId.length - 1];
+    }
+
+    /**
      * Returns the landing time at a certain destination.
      * @return an String value, representing the date and time.
      */
@@ -38,8 +60,8 @@ public class Time {
         int indexOriginTimeZone = 0;
 
         for (int i = 0; i < timeZones.length; i++) {
-            if (timeZones[i].split("/")[1].equals(origin)) {
-                // 
+            if (getCityName(timeZones[i]).equals(treatCityName(origin))) {
+                indexOriginTimeZone = i;
                 break;
             }
         }
@@ -52,8 +74,8 @@ public class Time {
         int indexDestinationTimeZone = 0;
 
         for (int i = 0; i < timeZones.length; i++) {
-            if (timeZones[i].split("/")[1].equals(destination)) {
-                // 
+            if (getCityName(timeZones[i]).equals(treatCityName(destination))) {
+                indexDestinationTimeZone = 1;
                 break;
             }
         }
@@ -75,8 +97,8 @@ public class Time {
         int indexOriginTimeZone = 0;
 
         for (int i = 0; i < timeZones.length; i++) {
-            if (timeZones[i].contains(destination)) {
-                // 
+            if (getCityName(timeZones[i]).equals(treatCityName(destination))) {
+                indexOriginTimeZone = i;
                 break;
             }
         }
