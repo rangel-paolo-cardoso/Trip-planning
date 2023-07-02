@@ -29,7 +29,7 @@ public class Time {
     }
 
     /**
-     * Converts the city name to a normalized form.
+     * Converts the city name to a normalized form, removing the accents.
      * @param city the name of the city, type String.
      * @return a String that holds the normalized form of the city name.
      */
@@ -44,7 +44,8 @@ public class Time {
      * @param splitZoneId array fo type String.
      * @return string representing the city name.
      */
-    private String getCityName(String[] splitZoneId) {
+    private String getCityName(String zoneId) {
+        String[] splitZoneId = zoneId.split("/");
         return splitZoneId[splitZoneId.length - 1];
     }
 
@@ -59,8 +60,7 @@ public class Time {
         int indexOriginTimeZone = 0;
 
         for (int i = 0; i < timeZones.length; i++) {
-            System.out.println("City name: " + treatCityName(origin));
-            if (getCityName(timeZones[i].split("/")).equals(treatCityName(origin))) {
+            if (getCityName(timeZones[i]).equals(treatCityName(origin))) {
                 indexOriginTimeZone = i;
                 break;
             }
@@ -74,7 +74,7 @@ public class Time {
         int indexDestinationTimeZone = 0;
 
         for (int i = 0; i < timeZones.length; i++) {
-            if (getCityName(timeZones[i].split("/")).equals(treatCityName(destination))) {
+            if (getCityName(timeZones[i]).equals(treatCityName(destination))) {
                 indexDestinationTimeZone = 1;
                 break;
             }
@@ -97,7 +97,7 @@ public class Time {
         int indexOriginTimeZone = 0;
 
         for (int i = 0; i < timeZones.length; i++) {
-            if (getCityName(timeZones[i].split("/")).equals(treatCityName(destination))) {
+            if (getCityName(timeZones[i]).equals(treatCityName(destination))) {
                 indexOriginTimeZone = i;
                 break;
             }
