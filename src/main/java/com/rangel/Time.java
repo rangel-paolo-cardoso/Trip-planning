@@ -28,6 +28,15 @@ public class Time {
     }
 
     /**
+     * Returns the city name, given an array of type String containing the ZodeId.
+     * @param splitZoneId array fo type String.
+     * @return string representing the city name.
+     */
+    private String getCityName(String[] splitZoneId) {
+        return splitZoneId[splitZoneId.length - 1];
+    }
+
+    /**
      * Returns the landing time at a certain destination.
      * @return an String value, representing the date and time.
      */
@@ -38,8 +47,8 @@ public class Time {
         int indexOriginTimeZone = 0;
 
         for (int i = 0; i < timeZones.length; i++) {
-            if (timeZones[i].split("/")[1].equals(origin)) {
-                // 
+            if (getCityName(timeZones[i].split("/")).equals(origin)) {
+                indexOriginTimeZone = i;
                 break;
             }
         }
@@ -52,8 +61,8 @@ public class Time {
         int indexDestinationTimeZone = 0;
 
         for (int i = 0; i < timeZones.length; i++) {
-            if (timeZones[i].split("/")[1].equals(destination)) {
-                // 
+            if (getCityName(timeZones[i].split("/")).equals(destination)) {
+                indexDestinationTimeZone = 1;
                 break;
             }
         }
@@ -76,7 +85,7 @@ public class Time {
 
         for (int i = 0; i < timeZones.length; i++) {
             if (timeZones[i].contains(destination)) {
-                // 
+                indexOriginTimeZone = i;
                 break;
             }
         }
